@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  forest:
+    image: runmymind/steamcmd
+    restart: always
+    environment:
+      - "TZ=Europe/Berlin"
+      - "STEAMCMD_APP_ID=294420"
+      - "STEAMCMD_NO_VALIDATE=true"
+      - "STEAM_USERNAME=anonymous"
+    ports:
+      - "8082:8082"
+      - "26900-26902:26900-26902"
+      - "26900-26902:26900-26902/udp"
+    volumes:
+      - ./run.sh:/run.sh:ro
+      - ./data:/data
+      - ./userdata:/home/steam/.local/share/7DaysToDie
+    command:
+      - steamcmd-wrapper
+      - /run.sh

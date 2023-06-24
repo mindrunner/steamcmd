@@ -1,0 +1,23 @@
+version: "2"
+
+services:
+  forest:
+    image: runmymind/steamcmd
+    restart: always
+    environment:
+      - "TZ=Europe/Berlin"
+      - "STEAMCMD_APP_ID=2465200"
+      - "STEAMCMD_NO_VALIDATE=true"
+      - "STEAM_USERNAME=anonymous"
+      - "PLATFORM_TYPE=windows"
+    ports:
+      - "8766:8766/udp"
+      - "27016:27016/udp"
+      - "9700:9700/udp"
+    volumes:
+      - ./run.sh:/run.sh:ro
+      - ./data:/data
+      - ./userdata:/home/steam/.wine
+    command:
+      - steamcmd-wrapper
+      - /run.sh

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+if [[ -z "$STEAMCMD_SKIP" ]]; then
+  if [[ -z "$STEAMCMD_APP_ID" ]]; then
+    echo "ERROR: STEAMCMD_APP_ID is required"
+    exit 1
+  fi
+
+  validate=""
+  beta=""
+  betapassword=""
+
+  if [[ -z "$STEAMCMD_NO_VALIDATE" ]]; then
+    validate="validate"
+  fi
+
+  if [[ -n "$STEAMCMD_BETA" ]]; then
+    beta="-beta $STEAMCMD_BETA"
+  fi
+
+  if [[ -n "$STEAMCMD_BETA_PASSWORD" ]]; then
+    betapassword="-betapassword $STEAMCMD_BETA_PASSWORD"
+  fi
+
+  PLATFORM_TYPE=${PLATFORM_TYPE:-linux}
+
+  echo "Running steamcmd"
+  ls -ahl /home/steam/
+  steamcmd +login $STEAMCMD_LOGIN \
+    +@sSteamCmdForcePlatformType $PLATFORM_TYPE \
+    +force_install_dir /data \
+    +app_update $STEAMCMD_APP_ID $beta $betapassword $validate \
+    +quit
+else
+  echo "Skipping steamcmd"
+fi
+
+exec "$@"
