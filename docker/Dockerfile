@@ -10,7 +10,8 @@ RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -q -y && \
     rm -rf /var/lib/apt/lists/*
 
-RUN addgroup --gid 1000 steam && \
+RUN userdel ubuntu && \
+    addgroup --gid 1000 steam && \
     adduser --system --home /home/steam --shell /bin/false --uid 1000 --ingroup steam steam && \
     usermod -a -G tty steam && \
     mkdir -m 777 /data && \
